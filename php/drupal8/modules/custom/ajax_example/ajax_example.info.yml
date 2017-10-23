@@ -1,0 +1,5 @@
+name: ajax example
+type: module
+description: illustrating ajax example
+core: 8.x
+package: Custom

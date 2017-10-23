@@ -1,0 +1,9 @@
+
+ajax_example.ajaxexample:
+  path: '/ajax_example'
+  defaults:
+    _form: '\Drupal\ajax_example\Form\ajaxexample'
+    _title: 'ajaxexample'
+  requirements:
+    _access: 'TRUE'
+  

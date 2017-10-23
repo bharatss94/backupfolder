@@ -1,0 +1,30 @@
+<?php 
+
+
+session_start();
+include("database.php");
+//$username=$_POST['username'];
+$username=$_SESSION['login_user'];
+
+  echo $username;
+$sql = "SELECT * FROM registration where username='$username'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+echo "<table><tr><th>ID</th><th>FirstName</th><th>LastName</th><th>Username</th><th>Password</th><th>Email</th><th>account created</th></tr>";
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>".$row["id"]."</td><td>".$row["firstname"]."</td><td> ".$row["lastname"]."</td> <td>".$row["username"]."</td>
+<td>".$row["password"]."</td><td>".$row["email"]."</td><td>".$row["logintime"]."</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+echo "<a href='home.php'> Home</a>";
+
+$name=$GLOBALS['name']; 
+echo "<script> console.log($name)</script>";
+
+
+?>

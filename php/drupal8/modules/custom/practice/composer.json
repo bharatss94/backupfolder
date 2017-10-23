@@ -1,0 +1,14 @@
+{
+  "name": "drupal/practice",
+  "type": "drupal-module",
+  "description": "practice codes",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/practice",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/practice",
+    "source": "http://cgit.drupalcode.org/practice"
+  },
+  "require": { }
+}

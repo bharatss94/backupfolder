@@ -1,0 +1,232 @@
+<?php
+
+define('PROFILE_TIMEOUT', 1); // 1 mins
+
+// Profiles class
+class CProfiles {
+
+    // constructor
+    function CProfiles() {
+    }
+
+    // profile registration
+    function registerProfile() {
+        $sUsername = $GLOBALS['MySQL']->escape($_POST['username']);
+        $sFirstname = $GLOBALS['MySQL']->escape($_POST['firstname']);
+        $sLastname = $GLOBALS['MySQL']->escape($_POST['lastname']);
+        $sEmail = $GLOBALS['MySQL']->escape($_POST['email']);
+        $sPassword = $GLOBALS['MySQL']->escape($_POST['password']);
+
+        if ($sUsername && $sEmail && $sPassword) {
+            // check if already exist
+            $aProfile = $GLOBALS['MySQL']->getRow("SELECT * FROM `cs_profiles` WHERE `email`='{$sEmail}'");
+            if ($aProfile['id'] > 0) {
+                $sErrors = '<h2>Another profile with same email already exist</h2>';
+            } else {
+                // generate Salt and Cached password
+                $sSalt = $this->getRandCode();
+                $sPass = sha1(md5($sPassword) . $sSalt);
+
+                // add new member into database
+                $sSQL = "
+                    INSERT INTO `cs_profiles` SET 
+                    `name` = '{$sUsername}',
+                    `first_name` = '{$sFirstname}',
+                    `last_name` = '{$sLastname}',
+                    `email` = '{$sEmail}',
+                    `password` = '{$sPass}',
+                    `salt` = '{$sSalt}',
+                    `status` = 'active',
+                    `role` = '1',
+                    `date_reg` = NOW();
+                ";
+                $GLOBALS['MySQL']->res($sSQL);
+
+                // autologin
+                $GLOBALS['CLogin']->performLogin($sUsername, $sPassword);
+            }
+        }
+    }
+
+    // get random code (for salt)
+    function getRandCode($iLen = 8) {
+        $sRes = '';
+
+        $sChars = "23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+        for ($i = 0; $i < $iLen; $i++) {
+            $z = rand(0, strlen($sChars) -1);
+            $sRes .= $sChars[$z];
+        }
+        return $sRes;
+    }
+
+    // get profiles block
+    function getProfilesBlock($iLim = 10, $bOnlineOnly = false) {
+        $iPLimit = PROFILE_TIMEOUT;
+$id=$_SESSION['member_id'];
+        $sOnlineSQL = ($bOnlineOnly) ? 'AND (`date_nav` > SUBDATE(NOW(), INTERVAL ' . $iPLimit . ' MINUTE))' : '';        
+$role=$_SESSION['member_role'];
+//retriving online users	
+/*	$sSQL = "
+            SELECT `cs_profiles`.*,
+            if (`date_nav` > SUBDATE(NOW(), INTERVAL {$iPLimit} MINUTE ), 1, 0) AS `is_online`
+            FROM `cs_profiles`
+            WHERE   `id` <> '$id' and `status` = 'active' 
+            {$sOnlineSQL}
+		
+            ORDER BY `date_reg` DESC
+            LIMIT {$iLim} 
+        ";
+*/
+//retriving online status of admin
+if ($_SESSION['member_role'] == 5) {
+$sSQL = "
+            SELECT `cs_profiles`.*,
+            if (`date_nav` > SUBDATE(NOW(), INTERVAL {$iPLimit}.MINUTE), 1, 0) AS `is_online`
+            FROM `cs_profiles`
+            WHERE   `id` <> '$id' and `role`='1' and `status` = 'active' 
+            {$sOnlineSQL}
+		
+            ORDER BY `date_reg` DESC
+            LIMIT {$iLim} 
+        ";
+}
+else {
+$sSQL = "
+            SELECT `cs_profiles`.*,
+            if (`date_nav` > SUBDATE(NOW(), INTERVAL {$iPLimit} MINUTE ), 1, 0) AS `is_online`
+            FROM `cs_profiles`
+            WHERE   `id` <> '$id'and `role`='5'  and `status` = 'active' 
+            {$sOnlineSQL}
+		
+            ORDER BY `date_reg` DESC
+            LIMIT {$iLim} 
+        ";
+}
+
+
+echo "<script> console.log($id);</script>";
+echo "<script> console.log($role);</script>";
+        $aProfiles = $GLOBALS['MySQL']->getAll($sSQL);
+
+        $bCanChat = ($_SESSION['member_id'] && $_SESSION['member_status'] == 'active' && $_SESSION['member_role']);
+
+        // create list of messages
+        $sCode = '';
+        foreach ($aProfiles as $i => $aProfile) {
+            $sName = ($aProfile['first_name'] && $aProfile['last_name']) ? $aProfile['first_name'] . ' ' . $aProfile['last_name'] : $aProfile['name'];
+            $sSName = (strlen($sName) > 32) ? mb_substr($sName, 0, 28) . '...' : $sName;
+            $iPid = $aProfile['id'];
+            $sAvatar = $this->getProfileAvatar($iPid);
+
+            $sOnline = ($aProfile['is_online'] == 1) ? '<img alt="" src="images/online.png" class="status_img" />' : '';
+            $sChat = ($bCanChat /*&& $aProfile['is_online'] == 1*/) ? '<img id="'.$iPid.'" alt="chat" src="images/chat.png" class="pchat" title="'.$sName.'" />' : '';
+            $sCode .= '<div id="'.$iPid.'" title="'.$sName.'"><a href="profile.php?id='.$iPid.'"><img src="'.$sAvatar.'" alt="'.$sName.'"><p>'.$sSName.$sChat.'</p>'.$sOnline.'</a></div>';
+        }
+
+        $sClass = ($bOnlineOnly) ? 'profiles online_profiles' : 'profiles';
+        return '<div class="'.$sClass.'">' . $sCode . '</div>';
+    }
+
+    // get profile info
+    function getProfileInfo($i) {
+        $sSQL = "
+            SELECT * 
+            FROM `cs_profiles`
+            WHERE `id` = '{$i}'
+        ";
+        $aInfos = $GLOBALS['MySQL']->getAll($sSQL);
+        return $aInfos[0];
+    }
+
+    // get role name
+    function getRoleName($i) {
+        $sRet = 'Ordinary member';
+        switch ($i) {
+            case 4:
+                $sRet = 'Moderator';
+                break;
+            case 5:
+                $sRet = 'Administrator';
+                break;
+        }
+        return $sRet;
+    }
+
+    // get profile avatar block
+    function getProfileAvatarBlock() {
+        if ($_SESSION['member_id']) {
+            $aInfo = $this->getProfileInfo((int)$_SESSION['member_id']);
+            if (is_array($aInfo) && count($aInfo)) {
+                $sName = ($aInfo['first_name'] && $aInfo['last_name']) ? $aInfo['first_name'] . ' ' . $aInfo['last_name'] : $aInfo['name'];
+
+                $aKeys = array(
+                    '{id}' => $aInfo['id'],
+                    '{image}' => $this->getProfileAvatar($aInfo['id']),
+                    '{name}' => $sName
+                );
+                return strtr(file_get_contents('templates/avatar.html'), $aKeys);
+            }
+        }
+    }
+
+    function getProfileAvatar($i) {
+        $sPath = 'data/' . $i . '.jpg';
+        return (file_exists($sPath)) ? $sPath : 'images/member.png';
+    }
+
+    // get block member action button
+    function getBlockMemberAction($iPid) {
+        if ($_SESSION['member_id'] != $iPid && $_SESSION['member_status'] == 'active' && in_array($_SESSION['member_role'], array(4, 5))) {
+            $aMyInfo = $this->getProfileInfo($_SESSION['member_id']);
+            $aInfo = $this->getProfileInfo($iPid);
+
+            if ($aMyInfo['role'] > $aInfo['role']) {
+                $sStatus = $aInfo['status'];
+                $sDescDesc = ($sStatus == 'active') ? 'Block this member' : 'Unblock this member';
+
+                return '<font style="float:right"><button id="block" pid="'.$iPid.'">'.$sDescDesc.'</button></font><script src="js/admin_utils.js"></script>';
+            }
+        }
+    }
+
+    // block member
+    function blockMember($iPid) {
+        if ($iPid) {
+            $aInfo = $this->getProfileInfo($iPid);
+            $sStatus = $aInfo['status'];
+            $sUpStatus = ($sStatus == 'active') ? 'passive' : 'active';
+            $sSQL = "
+                UPDATE `cs_profiles` SET 
+                `status` = '{$sUpStatus}'
+                WHERE `id` = '{$iPid}'
+            ";
+            $GLOBALS['MySQL']->res($sSQL);
+            return ($sStatus == 'active') ? 2 : 1;
+        }
+        return;
+    }
+
+    function changeColor($sColor = '') {
+        $iPid = (int)$_SESSION['member_id'];
+        $sColor = $GLOBALS['MySQL']->escape($sColor);
+        if ($iPid && $sColor) {
+            if (strlen($sColor) == 4) {
+                $sColor = '00' . $sColor;
+            }
+            $sSQL = "
+                UPDATE `cs_profiles` SET 
+                `color` = '{$sColor}'
+                WHERE `id` = '{$iPid}'
+            ";
+            $GLOBALS['MySQL']->res($sSQL);
+            return 1;
+        }
+        return;
+    }
+
+    
+
+}
+
+$GLOBALS['CProfiles'] = new CProfiles();

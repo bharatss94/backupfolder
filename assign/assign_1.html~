@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){   
+    $("#show").click(function(e){
+ $("p").show();
+         e.preventDefault();
+        
+   });
+});</script>
+</head>
+<body>
+<div>
+		<div>	
+
+		<ul>
+ 		 <li><a href="#home">Home</a></li>
+  		<li><a href="#tab1">tab 1</a></li>
+  		<li><a href="#tab2">tab 2</a></li>
+  		<li><a href="#tab3">tab 3</a></li>
+		</ul>
+		</div>
+<div>
+<div class="div1">
+<div style="width:25%;float:left;">
+<img src="login.png" style="width:100%; margin-top:50px;"/>
+</div>
+<form style="float:right; width:75%;" >
+<label>First name:</label><br/>
+<input type="text" name="firstname">
+<br>
+<label>Last name:</label><br/>
+<input type="text" name="lastname">
+<br><br>
+<input type="submit">
+</form>
+
+</div>
+<div class="div1"
+style="background-color:red;">
+
+
+<img src="weather.jpg" alt="image not available" width=100% height=100%/>
+</div>
+<div class="div1"
+style="background-color:yellow;">
+<div class="div1a" >
+<img src="profile.png" alt="image not available" width=100% height=100%/>
+</div>
+
+<div class="div1b" style="background-color:grey;">
+<div class="div1aa"> likes
+</div>
+<div class="div1aa"> comments
+</div>
+<div class="div1aa"> reacts
+</div>
+
+</div>
+<div class="div1c" style="background-color:red;">
+<h3> click here </h3>
+</div>
+</div>
+</div>
+<div>
+<div class="div1">
+
+<form>
+<label>Search here</label> <br/>
+<input  type="text" class="text-div" name="name" size="30"/><br/>
+<input id="show" type="submit" value="submit" />
+
+<p style="display:none; 
+   font-size:10px;       
+   color:black; background:yellow;  
+   width:300px;          
+   text-align:center; 
+position:absolute;       
+   padding:26px 5px;      
+   font-weight:bold;         
+   border:1px solid gray;  " > enter the correct data</p>
+</form>
+
+
+</div>
+<div class="div1">
+<form>
+<label> Payment option</label><br/>
+<input  type="radio" name="payment" value="debit"/>Debit card<br/>
+<input  type="radio" name="payment" value="credit"/>Credit card<br/>
+<input  type="radio" name="payment" value="internet"/>Internet banking<br/>
+
+</form>
+</div>
+<div class="div1">
+<img src="scenary.gif" alt="image not available" width=100% height=100%/>
+</div>
+
+</div>
+</div> 
+
+
+
+</body>
+</html>
+

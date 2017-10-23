@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains bharat.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function bharat_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the bharat module.
+    case 'help.page.bharat':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('example') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function bharat_theme() {
+  return [
+    'bharat' => [
+      'render element' => 'children',
+    ],
+  ];
+}

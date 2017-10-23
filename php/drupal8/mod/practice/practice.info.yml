@@ -1,0 +1,7 @@
+name: practice
+type: module
+description: ld
+core: 8.x
+package: Custom
+dependencies:
+  - context

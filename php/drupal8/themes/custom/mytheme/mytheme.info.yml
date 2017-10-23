@@ -1,0 +1,14 @@
+name: mytheme
+type: theme
+description: mytheme
+package: other
+core: 8.x
+libraries:
+  - mytheme/global-styling
+  - mytheme/mytheme
+  - mytheme/mytheme1
+ 
+base theme: false
+
+regions:
+  content: content

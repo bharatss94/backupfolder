@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains practice.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function practice_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the practice module.
+    case 'help.page.practice':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('ld') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function practice_theme() {
+  return [
+    'practice' => [
+      'render element' => 'children',
+    ],
+  ];
+}

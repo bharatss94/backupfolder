@@ -1,0 +1,66 @@
+<html>
+<head>
+</head>
+
+<body>
+<form>
+<label>Enter a range of number to print</label><input type="text" name="number" id="number"/><br/><br/>    
+<input type="button" id="submit" value="submit"/>
+
+</form>
+<ul >
+
+</ul>
+<script src="jquery-3.2.1.js"></script>
+
+<script>
+$(document).ready(function(){
+$("#submit").click(function(){
+$('ul').html("");
+var n=$("#number").val();
+for (var i=1;i<=n;i++)
+{
+
+  $('ul').append("<li>"+i+"</li>");  
+ 
+} $('li').hide();
+ /*   var shown = $('ul > li:first');
+   shown.hide().delay(1000).fadeIn(1000).fadeOut(1000);
+    setInterval(function(){
+        if(shown.next().length){
+            shown = shown.next();
+             shown.hide().delay(1000).fadeIn(1000).fadeOut(1000);
+        }
+    },4000);*/
+//$( 'ul > li:first' ).nextAll().fadeIn(1000).fadeOut(1000);
+/*$( "li" ).each(function( index ) {
+ // console.log( index + ": " + $( this ).text() );
+   $(this).hide().delay(1000).fadeIn(1000).fadeOut(1000);
+});
+*/
+/* $('li').each(function (index) {
+    $(this).css('background-color', 'orange').text()
+          
+          .fadeOut(1500);
+  });*/
+for (var j=1;j<=n;j++) {
+ $('li').each(function(index) {
+console.log($(this));
+
+        $(this).delay(2000*index).queue(
+            function(n){
+                $(this).hide().delay(1000).fadeIn(500).fadeOut(500);
+                n();
+            });
+    });
+}
+
+/*$(function () {
+
+    setInterval(repeat, 4000);
+})*/
+});
+});
+</script>
+</body>
+</html>

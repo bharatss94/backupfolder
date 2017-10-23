@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <title>Infanion Chat system</title>
+    <link href="css/main.css" rel="stylesheet" type="text/css" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+   
+    <div class="clear"></div>
+    <div class="container" id="con1">
+        {form}
+        {avatar}
+    </div>
+
+
+<div class="container">
+
+
+</div>
+    <div class="sidebar" id="links">
+        <div>
+            <h2>Online Members Block</h2>
+            {online_members}
+        </div>
+        <!--<div>
+            <h2>Last Members</h2>
+            {profiles}
+        </div>-->
+    </div>
+<!-- refreshing the page every 1 sec  -->
+<script language="javascript" type="text/javascript">
+var timeout = setTimeout(reloadChat, 1000);
+
+function reloadChat () {
+$('#links').load('index.php #links',function () {
+        $(this).unwrap();
+        timeout = setTimeout(reloadChat, 1000);
+});
+}
+</script>
+    <div class="priv_dock_wrap"></div>
+    {priv_js}
+
+</body>
+</html>

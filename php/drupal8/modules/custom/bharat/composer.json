@@ -1,0 +1,14 @@
+{
+  "name": "drupal/bharat",
+  "type": "drupal-module",
+  "description": "example",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/bharat",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/bharat",
+    "source": "http://cgit.drupalcode.org/bharat"
+  },
+  "require": { }
+}

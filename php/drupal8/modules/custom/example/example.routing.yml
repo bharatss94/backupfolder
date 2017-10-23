@@ -1,0 +1,17 @@
+
+example.sample_hello:
+  path: '/example'
+  defaults:
+    _controller: '\Drupal\example\Controller\sample::hello'
+    _title: 'sample'
+  requirements:
+    _permission: 'access content'
+
+example.sampleform:
+  path: '/example/form'
+  defaults:
+    _form: '\Drupal\example\Form\sampleform'
+    _title: 'sampleform'
+  requirements:
+    _access: 'TRUE'
+  

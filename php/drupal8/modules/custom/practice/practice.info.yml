@@ -1,0 +1,5 @@
+name: practice
+type: module
+description: practice codes
+core: 8.x
+package: Custom

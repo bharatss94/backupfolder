@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div>
+		<div>	
+
+		<ul  >
+ 		 <li class="home" ><a href="#home">Home</a></li>
+  		<li class="tab1"><a href="#tab1">tab 1</a></li>
+  		<li class="tab2"><a href="#tab2">tab 2</a></li>
+  		<li class="tab3" ><a href="#tab3">tab 3</a></li>
+		</ul>
+		</div>
+<div>
+<div class="div1">
+<div style="width:25%;float:left;">
+<label> move mouse on me</label>
+<img id="img1" src="login.png" style="width:100%; margin-top:50px;"/>
+</div>
+<form style="float:right; width:75%;" >
+<label>First name:</label><br/>
+<input type="text" name="firstname">
+<br>
+<label>Last name:</label><br/>
+<input type="text" name="lastname">
+<br><br>
+<input id="val"  type="submit">
+</form>
+<button id="remove"> click to remove all form tags</button>
+</div>
+<div class="div1"
+style="background-color:red;">
+<button id="animation">Start Animation</button>
+
+<img id="animateimage" src="weather.jpg" alt="image not available" width=100% height=100%/>
+</div>
+<div class="div1"
+style="background-color:yellow;">
+<div class="div1a" >
+<img src="profile.png" alt="image not available" width=100% height=100%/>
+</div>
+
+<div class="div1b" style="background-color:grey;">
+<div class="div1aa" id="append" > likes
+</div>
+<div class="div1aa" id="prepend"> comments
+</div>
+<div class="div1aa"> reacts
+</div>
+
+</div>
+<div class="div1c" style="background-color:red;">
+<h3> click here </h3>
+</div>
+</div>
+</div>
+<div>
+<div class="div1">
+
+<form >
+<label>Search here</label> <br/>
+<label>type and click outside it will blur</label>
+<input id="blur"  type="text" class="text-div" name="name" size="30"/><br/>
+<input id="show" type="submit" value="submit" />
+
+<p class="popup"> enter the correct data</p>
+</form>
+
+<div id="flip" class="div2aa">Click on me  to slide the panel down or up</div>
+
+<div id="panel" class="div2ab">Hello welcome to infanion
+good morning My name is Bharat</div>
+</div>
+<div class="div1">
+<button id="fade">Click to fade in and out form page</button><br>
+<form id="formfade">
+<label> Payment option</label><br/>
+<input  type="radio" name="payment" value="debit"/>Debit card<br/>
+<input  type="radio" name="payment" value="credit"/>Credit card<br/>
+<input  type="radio" name="payment" value="internet"/>Internet banking<br/>
+
+<label>type here and click enter or outside to change effect</label>
+<input  type="text" name="text" /><br/>
+
+</form>
+
+</div>
+<div class="div1">
+<button id="chaining">click here to see chaining for slide up and down</button>
+
+<img id="slideimage" src="scenary.gif" alt="image not available" width=100% height=100%/>
+</div>
+
+</div>
+</div> 
+<script src="jquery-3.2.1.js"></script>
+<script>
+$(document).ready(function(){   
+    $("#show").click(function(e){
+ $("p").toggle("slow", function(){
+        alert("The paragraph is now hidden");
+});
+        e.preventDefault();
+        
+   });
+});</script>
+<script src="test.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,17 @@
+
+practice.welcome_controller_hello:
+  path: '/practice'
+  defaults:
+    _controller: '\Drupal\practice\Controller\WelcomeController::hello'
+    _title: 'hello'
+  requirements:
+    _permission: 'access content'
+
+practice.sampleform:
+  path: '/practice/form'
+  defaults:
+    _form: '\Drupal\practice\Form\sampleform'
+    _title: 'sampleform'
+  requirements:
+    _access: 'TRUE'
+  
